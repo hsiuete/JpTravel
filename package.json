@@ -1,0 +1,28 @@
+{
+  "name": "jptravel",
+  "version": "1.0.0",
+  "description": "Tokyo Travel Itinerary - Interactive map and travel planner",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "travel",
+    "tokyo",
+    "itinerary",
+    "map",
+    "leaflet",
+    "japan"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hsiuete/jptravel.git"
+  },
+  "homepage": "https://hsiuete.github.io/jptravel/",
+  "devDependencies": {},
+  "dependencies": {}
+}

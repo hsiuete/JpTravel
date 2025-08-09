@@ -1,0 +1,201 @@
+{
+  "trip": "Tokyo Shopping & Food",
+  "from": "Kaohsiung",
+  "start_date": "2026-01-02",
+  "end_date": "2026-01-08",
+  "days": [
+    {
+      "date": "2026-01-02",
+      "title": "抵達 + 新宿逛街 & 晚餐",
+      "summary": "抵達東京 -> 入住飯店（建議新宿或東京站周邊） -> 新宿逛街、百貨、藥妝 -> Isetan 7F AGIO 晚餐",
+      "places": [
+        {
+          "name": "Isetan Shinjuku (AGIO on 7F)",
+          "address": "Isetan Shinjuku 7F, 3-14-1 Shinjuku, Shinjuku-ku, Tokyo",
+          "lat": 35.6895,
+          "lng": 139.7004,
+          "notes": "伊勢丹 7 樓的 AGIO 義式餐廳，建議提前預約。部分評論指出可線上查詢/預約。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Isetan+Shinjuku+AGIO"
+        },
+        {
+          "name": "Shinjuku shopping area",
+          "address": "Shinjuku Station area",
+          "lat": 35.69384,
+          "lng": 139.70345,
+          "notes": "百貨、電器店與藥妝店集中，晚上熱鬧。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Shinjuku+station"
+        }
+      ]
+    },
+    {
+      "date": "2026-01-03",
+      "title": "明治神宮、表參道、原宿、渋谷血拚",
+      "summary": "早：明治神宮 -> 表參道逛街（精品、設計店）-> 午：俺流塩ラーメン -> 下午前往渋谷新大樓群與 Shibuya Scramble 周邊逛街",
+      "places": [
+        {
+          "name": "Meiji Jingu (明治神宮)",
+          "address": "1-1 Yoyogi Kamizono-cho, Shibuya-ku, Tokyo 151-8557",
+          "lat": 35.675526,
+          "lng": 139.698578,
+          "notes": "神社每日開放，早晨人較少，適合散步。官方網站請見備註。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Meiji+Jingu+Tokyo"
+        },
+        {
+          "name": "Omotesando - 表參道",
+          "address": "Omotesando, Shibuya-ku, Tokyo",
+          "lat": 35.6679,
+          "lng": 139.7122,
+          "notes": "樹蔭大道，集合多家精品與設計店；適合 shopping & cafe hopping。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Omotesando+Tokyo"
+        },
+        {
+          "name": "俺流塩らーめん 表參道店 (Ore Ryu Shio Ramen)",
+          "address": "〒150-0001 東京都渋谷区神宮前6-2-8 表参道ビル 1F",
+          "lat": 35.6691,
+          "lng": 139.7081,
+          "notes": "營業 11:00–23:00；通常不接受預約，可能排隊。來源：店家官方頁。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=%E4%BF%BA%E6%B5%81%E5%A1%A9%E3%82%89%E3%83%BC%E3%82%81%E3%82%93+Omotesando"
+        },
+        {
+          "name": "Shibuya Scramble Square / Shibuya shopping",
+          "address": "Shibuya Station area",
+          "lat": 35.65806,
+          "lng": 139.70139,
+          "notes": "渋谷新城開發群，商場眾多，適合晚間逛街與美食。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Shibuya+Scramble+Square"
+        }
+      ]
+    },
+    {
+      "date": "2026-01-04",
+      "title": "丸之內 / 東京車站 / 銀座血拚",
+      "summary": "東京站周邊購物（KITTE、丸之內仲通り）-> Ginza6/Ginza SIX 逛街購物 -> 晚餐在銀座附近",
+      "places": [
+        {
+          "name": "Tokyo Station / Marunouchi area",
+          "address": "Tokyo Station area (丸之內)",
+          "lat": 35.681236,
+          "lng": 139.767125,
+          "notes": "KITTE 與丸之內仲通り為購物與商務餐飲集中區。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Tokyo+Station+marunouchi"
+        },
+        {
+          "name": "GINZA SIX",
+          "address": "6-10-1 Ginza, Chuo-ku, Tokyo 104-0061",
+          "lat": 35.66949,
+          "lng": 139.76402,
+          "notes": "銀座大型商業設施，集合奢侈品牌與餐廳，營業時間店家不同請依官方頁為主。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=GINZA+SIX"
+        }
+      ]
+    },
+    {
+      "date": "2026-01-05",
+      "title": "六本木：Roppongi Hills / Tokyo Midtown",
+      "summary": "六本木 Hills 與 Tokyo Midtown 為購物+甜點+設計店集中地；推薦 Harbs 千層水果蛋糕、Robuchon 甜點店。",
+      "places": [
+        {
+          "name": "Roppongi Hills (六本木 Hills) - La Boutique Robuchon",
+          "address": "Roppongi Hills, Minato-ku, Tokyo",
+          "lat": 35.65993,
+          "lng": 139.73021,
+          "notes": "La Boutique de Joël Robuchon 位於六本木 Hills，糕點麵包極受歡迎。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=La+Boutique+de+Jo%C3%ABl+Robuchon+Roppongi+Hills"
+        },
+        {
+          "name": "Tokyo Midtown (中城) - Harbs & 酢重正之",
+          "address": "Tokyo Midtown, Akasaka/ Roppongi area",
+          "lat": 35.65983,
+          "lng": 139.7290,
+          "notes": "Harbs 以新鮮水果蛋糕聞名；Tokyo Midtown 也有多家日式定食/定食店（例如酢重正之等）。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Tokyo+Midtown+Harbs"
+        }
+      ]
+    },
+    {
+      "date": "2026-01-06",
+      "title": "恵比寿 / 目黒",
+      "summary": "恵比寿 Garden Place（Yebisu Brewery / Beer Museum）參觀品酒 -> 超市採買 -> 菊川 鰻魚飯 或 溫野菜 和牛火鍋 -> 目黑日式庭園咖啡短憩",
+      "places": [
+        {
+          "name": "YEBISU BREWERY TOKYO (ヱビスビール記念館)",
+          "address": "Yebisu Garden Place, 4-20-1 Ebisu, Shibuya-ku, Tokyo",
+          "lat": 35.64664,
+          "lng": 139.71004,
+          "notes": "啤酒主題館（導覽與品飲），營業時間與預約資訊請見官方。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Yebisu+Garden+Place+beer+museum"
+        },
+        {
+          "name": "Kikukawa (菊川) - Ebisu Garden Place (38F 餐廳)",
+          "address": "Ebisu Garden Place tower (check floor list)",
+          "lat": 35.6469,
+          "lng": 139.7101,
+          "notes": "菊川為知名鰻魚飯店（確認是否需要預約），部份高樓餐廳有美景。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Kikukawa+Ebisu"
+        },
+        {
+          "name": "On-Yasai (温野菜) - Ebisu area (shabu-shabu chain)",
+          "address": "Ebisu Station area (West exit)",
+          "lat": 35.6462,
+          "lng": 139.7088,
+          "notes": "連鎖和牛火鍋，適合多人分食。營業與預約視分店而定。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=On+Yasai+Ebisu"
+        },
+        {
+          "name": "Meguro / Gajoen (雅叙園) garden & cafe",
+          "address": "Meguro area (Hotel Gajoen Tokyo / Happo-en nearby)",
+          "lat": 35.6323,
+          "lng": 139.7170,
+          "notes": "雅叙園 / 八芳園 均有中庭咖啡與日本庭園，適合午後短憩。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Hotel+Gajoen+Tokyo+garden"
+        }
+      ]
+    },
+    {
+      "date": "2026-01-07",
+      "title": "中目黒 / 武藏小山 / 吉祥寺（吉卜力備案）",
+      "summary": "中目黑小店、Starbucks Reserve -> 武藏小山 まきの 天ぷら 午餐 -> 吉祥寺站內市集、井之頭公園散步（若要吉卜力美術館需事前購票）",
+      "places": [
+        {
+          "name": "Nakameguro - Starbucks Reserve",
+          "address": "Nakameguro area",
+          "lat": 35.6433,
+          "lng": 139.7043,
+          "notes": "Starbucks Reserve 與區內小店、咖啡館匯聚，適合文青散步。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Starbucks+Reserve+Nakameguro"
+        },
+        {
+          "name": "Makino (まきの) - Musashi-Koyama tempura",
+          "address": "武蔵小山 (請以當地分店為準)",
+          "lat": 35.6072,
+          "lng": 139.6997,
+          "notes": "連鎖天婦羅專門店，通常有現場排隊制。建議中午前往避開尖峰。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Makino+tempura+Musashi+Koyama"
+        },
+        {
+          "name": "Kichijoji - Inokashira Park & station market",
+          "address": "Kichijoji Station / Inokashira Park",
+          "lat": 35.7033,
+          "lng": 139.5795,
+          "notes": "吉祥寺站內市集、井之頭公園適合晚間或黃昏散步。若要參觀吉卜力美術館，請提前線上預約門票。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Kichijoji+Inokashira+Park"
+        }
+      ]
+    },
+    {
+      "date": "2026-01-08",
+      "title": "最後血拚補貨 + 搭機返高雄",
+      "summary": "依航班時間安排行李、最後購物回補（藥妝/伴手禮/機場免稅），前往機場。",
+      "places": [
+        {
+          "name": "Final shopping (recommended: airport duty-free or Tokyo station shops)",
+          "address": "Depends on flight",
+          "lat": 35.681236,
+          "lng": 139.767125,
+          "notes": "若是上午班機可在東京站或羽田/成田機場做最後採購。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=Tokyo+Station+shopping"
+        }
+      ]
+    }
+  ]
+}
