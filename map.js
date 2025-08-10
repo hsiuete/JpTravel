@@ -1,31 +1,116 @@
 // map.js - external map loader with tabbed interface (expects itinerary.json present)
-// Safari iOS compatibility fixes included
+// Advanced Safari iOS compatibility fixes included
 (async function(){
   try {
     console.log('Loading itinerary.json...');
     console.log('User Agent:', navigator.userAgent);
     console.log('Platform:', navigator.platform);
     
-    // Safari-specific fetch with timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-    
-    const resp = await fetch('itinerary.json', {
-      signal: controller.signal,
-      cache: 'no-cache', // Force fresh request
-      headers: {
-        'Accept': 'application/json',
-        'Cache-Control': 'no-cache'
-      }
-    });
-    
-    clearTimeout(timeoutId);
-    
-    if (!resp.ok) {
-      throw new Error(`HTTP error! status: ${resp.status}`);
+    // Hide Safari loading indicator
+    const safariLoading = document.getElementById('safari-loading');
+    if (safariLoading) {
+      safariLoading.style.display = 'none';
     }
     
-    const data = await resp.json();
+    // Try multiple methods for Safari
+    let data = null;
+    let resp = null;
+    
+    // Method 1: Standard fetch with cache busting
+    try {
+      const timestamp = new Date().getTime();
+      const url1 = `itinerary.json?_t=${timestamp}`;
+      console.log('Trying Method 1:', url1);
+      
+      const controller1 = new AbortController();
+      const timeoutId1 = setTimeout(() => controller1.abort(), 15000); // 15 second timeout
+      
+      resp = await fetch(url1, {
+        signal: controller1.signal,
+        cache: 'no-cache',
+        headers: {
+          'Accept': 'application/json',
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
+      
+      clearTimeout(timeoutId1);
+      
+      if (resp.ok) {
+        data = await resp.json();
+        console.log('Method 1 successful');
+      } else {
+        throw new Error(`HTTP error! status: ${resp.status}`);
+      }
+    } catch (err1) {
+      console.log('Method 1 failed:', err1.message);
+      
+      // Method 2: Try with absolute path
+      try {
+        const url2 = `./itinerary.json?_t=${Date.now()}`;
+        console.log('Trying Method 2:', url2);
+        
+        const controller2 = new AbortController();
+        const timeoutId2 = setTimeout(() => controller2.abort(), 15000);
+        
+        resp = await fetch(url2, {
+          signal: controller2.signal,
+          cache: 'no-cache',
+          headers: {
+            'Accept': 'application/json',
+            'Cache-Control': 'no-cache'
+          }
+        });
+        
+        clearTimeout(timeoutId2);
+        
+        if (resp.ok) {
+          data = await resp.json();
+          console.log('Method 2 successful');
+        } else {
+          throw new Error(`HTTP error! status: ${resp.status}`);
+        }
+      } catch (err2) {
+        console.log('Method 2 failed:', err2.message);
+        
+        // Method 3: Try with full GitHub Pages URL
+        try {
+          const url3 = `https://hsiuete.github.io/jptravel/itinerary.json?_t=${Date.now()}`;
+          console.log('Trying Method 3:', url3);
+          
+          const controller3 = new AbortController();
+          const timeoutId3 = setTimeout(() => controller3.abort(), 15000);
+          
+          resp = await fetch(url3, {
+            signal: controller3.signal,
+            cache: 'no-cache',
+            mode: 'cors',
+            headers: {
+              'Accept': 'application/json',
+              'Cache-Control': 'no-cache'
+            }
+          });
+          
+          clearTimeout(timeoutId3);
+          
+          if (resp.ok) {
+            data = await resp.json();
+            console.log('Method 3 successful');
+          } else {
+            throw new Error(`HTTP error! status: ${resp.status}`);
+          }
+        } catch (err3) {
+          console.log('Method 3 failed:', err3.message);
+          throw new Error(`All fetch methods failed. Safari may be blocking requests. Last error: ${err3.message}`);
+        }
+      }
+    }
+    
+    if (!data) {
+      throw new Error('No data loaded from any method');
+    }
+    
     console.log('JSON loaded successfully:', data);
     
     // Create tabbed interface
@@ -61,11 +146,19 @@
   } catch(err){
     console.error('Error loading itinerary:', err);
     
+    // Show Safari-specific loading indicator again
+    const safariLoading = document.getElementById('safari-loading');
+    if (safariLoading) {
+      safariLoading.style.display = 'block';
+    }
+    
     // Safari-specific error handling
     if (err.name === 'AbortError') {
-      showError('Request timeout - Safari may be blocking the request. Try refreshing the page.');
+      showError('Request timeout - Safari may be blocking the request. Try refreshing the page or using Chrome.');
     } else if (err.message.includes('Failed to fetch')) {
-      showError('Safari blocked the request. This is a common Safari security feature. Try: 1) Refresh the page 2) Clear Safari cache 3) Use Chrome instead');
+      showError('Safari blocked the request. This is a common Safari security feature. Try: 1) Refresh the page 2) Clear Safari cache 3) Use Chrome instead 4) Wait a few minutes and try again');
+    } else if (err.message.includes('All fetch methods failed')) {
+      showError('Safari is blocking all requests. This is a known Safari issue. Solutions: 1) Use Chrome browser 2) Add to Home Screen 3) Wait 5-10 minutes and refresh 4) Clear Safari cache completely');
     } else {
       showError(err.message);
     }
@@ -155,19 +248,23 @@ function showError(errorMessage) {
       <h3>載入失敗</h3>
       <p>無法載入 itinerary.json 檔案</p>
       <p>錯誤訊息: ${errorMessage}</p>
-      <p>請確認：</p>
-      <ul>
-        <li>itinerary.json 檔案存在於同一資料夾</li>
-        <li>檔案格式正確（有效的 JSON）</li>
-        <li>透過 HTTP 伺服器存取（如 XAMPP）</li>
-      </ul>
-      <p><strong>Safari 使用者解決方案：</strong></p>
+      
+      <p><strong>Safari iOS 專用解決方案：</strong></p>
       <ol>
-        <li>重新整理頁面 (⌘+R)</li>
-        <li>清除 Safari 快取 (設定 → Safari → 清除歷史記錄與網站資料)</li>
-        <li>使用 Chrome 瀏覽器</li>
-        <li>檢查網路連線</li>
+        <li><strong>強制重新整理：</strong> 長按重新整理按鈕 → 選擇「重新整理並清除快取」</li>
+        <li><strong>清除 Safari 快取：</strong> 設定 → Safari → 清除歷史記錄與網站資料</li>
+        <strong>使用 Chrome 瀏覽器：</strong> 從 App Store 下載 Chrome</li>
+        <li><strong>加入主畫面：</strong> 分享按鈕 → 加入主畫面</li>
+        <li><strong>等待 5-10 分鐘：</strong> Safari 有時會自動解除封鎖</li>
       </ol>
+      
+      <p><strong>為什麼 Line 可以但 Safari 不行？</strong></p>
+      <ul>
+        <li>Line 使用不同的瀏覽器引擎</li>
+        <li>Safari 有更嚴格的內容封鎖政策</li>
+        <li>Safari 會快取和封鎖某些請求</li>
+      </ul>
+      
       <p><strong>一般解決方案：</strong></p>
       <ol>
         <li>啟動 XAMPP Control Panel</li>
