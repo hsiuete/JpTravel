@@ -181,9 +181,18 @@ function createTabs(days) {
   
   // Create tabs for each day
   days.forEach((day, index) => {
-    // Create tab button
+    // Create tab button with simplified number
     const tabButton = document.createElement('button');
-    tabButton.textContent = `${day.date} — ${day.title}`;
+    const dayNumber = index + 1;
+    tabButton.textContent = dayNumber.toString();
+    
+    // Add tooltip with date, area, and activity
+    const tooltipText = `${day.date}\n${day.title}\n${day.summary}`;
+    tabButton.title = tooltipText;
+    
+    // Add aria-label for accessibility
+    tabButton.setAttribute('aria-label', tooltipText);
+    
     tabButton.onclick = () => switchTab(index);
     
     // Safari-specific button fixes
