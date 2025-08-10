@@ -86,6 +86,30 @@
           "lng": 139.76402,
           "notes": "銀座大型商業設施，集合奢侈品牌與餐廳，營業時間店家不同請依官方頁為主。",
           "gmaps": "https://www.google.com/maps/search/?api=1&query=GINZA+SIX"
+        },
+        {
+          "name": "銀座久兵衛 - 壽司",
+          "address": "8-7-6 Ginza, Chuo-ku, Tokyo 104-0061",
+          "lat": 35.6712,
+          "lng": 139.7658,
+          "notes": "銀座知名壽司店，米其林星級餐廳，需要提前預約。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=銀座久兵衛+壽司"
+        },
+        {
+          "name": "銀座高橋拉麵",
+          "address": "4-10-3 Ginza, Chuo-ku, Tokyo 104-0061",
+          "lat": 35.6701,
+          "lng": 139.7635,
+          "notes": "銀座地區知名拉麵店，以濃郁湯頭聞名。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=銀座高橋拉麵"
+        },
+        {
+          "name": "銀座八五拉麵",
+          "address": "4-10-5 Ginza, Chuo-ku, Tokyo 104-0061",
+          "lat": 35.6703,
+          "lng": 139.7637,
+          "notes": "銀座地區拉麵名店，特色湯頭與配料。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=銀座八五拉麵"
         }
       ]
     },
