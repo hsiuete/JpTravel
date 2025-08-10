@@ -6,20 +6,36 @@
     console.log('User Agent:', navigator.userAgent);
     console.log('Platform:', navigator.platform);
     
-    // Hide Safari loading indicator
+    // Hide loading indicators initially
     const safariLoading = document.getElementById('safari-loading');
+    const chromeLoading = document.getElementById('chrome-loading');
+    
     if (safariLoading) {
       safariLoading.style.display = 'none';
     }
+    if (chromeLoading) {
+      chromeLoading.style.display = 'none';
+    }
     
-    // Try multiple methods for Safari
+    // Show appropriate loading indicator based on browser
+    if (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('Edge')) {
+      if (chromeLoading) {
+        chromeLoading.style.display = 'block';
+      }
+    } else if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+      if (safariLoading) {
+        safariLoading.style.display = 'block';
+      }
+    }
+    
+    // Try multiple methods for all browsers (especially Chrome and Safari)
     let data = null;
     let resp = null;
     
-    // Method 1: Standard fetch with cache busting
+    // Method 1: Standard fetch with aggressive cache busting
     try {
       const timestamp = new Date().getTime();
-      const url1 = `itinerary.json?_t=${timestamp}`;
+      const url1 = `itinerary.json?_t=${timestamp}&v=${Math.random()}`;
       console.log('Trying Method 1:', url1);
       
       const controller1 = new AbortController();
@@ -40,6 +56,10 @@
       if (resp.ok) {
         data = await resp.json();
         console.log('Method 1 successful');
+        
+        // Hide all loading indicators on success
+        if (safariLoading) safariLoading.style.display = 'none';
+        if (chromeLoading) chromeLoading.style.display = 'none';
       } else {
         throw new Error(`HTTP error! status: ${resp.status}`);
       }
@@ -68,6 +88,10 @@
         if (resp.ok) {
           data = await resp.json();
           console.log('Method 2 successful');
+          
+          // Hide all loading indicators on success
+          if (safariLoading) safariLoading.style.display = 'none';
+          if (chromeLoading) chromeLoading.style.display = 'none';
         } else {
           throw new Error(`HTTP error! status: ${resp.status}`);
         }
@@ -97,6 +121,10 @@
           if (resp.ok) {
             data = await resp.json();
             console.log('Method 3 successful');
+            
+            // Hide all loading indicators on success
+            if (safariLoading) safariLoading.style.display = 'none';
+            if (chromeLoading) chromeLoading.style.display = 'none';
           } else {
             throw new Error(`HTTP error! status: ${resp.status}`);
           }
@@ -152,13 +180,25 @@
       safariLoading.style.display = 'block';
     }
     
-    // Safari-specific error handling
+    // Browser-specific error handling
     if (err.name === 'AbortError') {
-      showError('Request timeout - Safari may be blocking the request. Try refreshing the page or using Chrome.');
+      if (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('Edge')) {
+        showError('Chrome request timeout. Try: 1) Refresh the page 2) Clear Chrome cache (Ctrl+Shift+Delete) 3) Try incognito mode 4) Use Edge instead');
+      } else {
+        showError('Request timeout - Safari may be blocking the request. Try refreshing the page or using Chrome.');
+      }
     } else if (err.message.includes('Failed to fetch')) {
-      showError('Safari blocked the request. This is a common Safari security feature. Try: 1) Refresh the page 2) Clear Safari cache 3) Use Chrome instead 4) Wait a few minutes and try again');
+      if (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('Edge')) {
+        showError('Chrome blocked the request. This is a common Chrome security feature. Try: 1) Refresh the page 2) Clear Chrome cache (Ctrl+Shift+Delete) 3) Try incognito mode 4) Use Edge instead 5) Wait a few minutes and try again');
+      } else {
+        showError('Safari blocked the request. This is a common Safari security feature. Try: 1) Refresh the page 2) Clear Safari cache 3) Use Chrome instead 4) Wait a few minutes and try again');
+      }
     } else if (err.message.includes('All fetch methods failed')) {
-      showError('Safari is blocking all requests. This is a known Safari issue. Solutions: 1) Use Chrome browser 2) Add to Home Screen 3) Wait 5-10 minutes and refresh 4) Clear Safari cache completely');
+      if (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('Edge')) {
+        showError('Chrome is blocking all requests. This is a known Chrome issue. Solutions: 1) Use Edge browser 2) Clear Chrome cache completely 3) Try incognito mode 4) Wait 5-10 minutes and refresh 5) Disable Chrome extensions temporarily');
+      } else {
+        showError('Safari is blocking all requests. This is a known Safari issue. Solutions: 1) Use Chrome browser 2) Add to Home Screen 3) Wait 5-10 minutes and refresh 4) Clear Safari cache completely');
+      }
     } else {
       showError(err.message);
     }

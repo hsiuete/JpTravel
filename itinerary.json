@@ -133,6 +133,22 @@
           "lng": 139.7290,
           "notes": "Harbs 以新鮮水果蛋糕聞名；Tokyo Midtown 也有多家日式定食/定食店（例如酢重正之等）。",
           "gmaps": "https://www.google.com/maps/search/?api=1&query=Tokyo+Midtown+Harbs"
+        },
+        {
+          "name": "麻布十番-十番右京-松露和牛蓋飯",
+          "address": "4-9-2 Azabujuban, Minato-ku, Tokyo 106-0045",
+          "lat": 35.6589,
+          "lng": 139.7345,
+          "notes": "麻布十番地區知名和牛蓋飯店，以松露和牛蓋飯聞名，建議提前預約。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=麻布十番+十番右京+松露和牛蓋飯"
+        },
+        {
+          "name": "麻布台Hills-精品美食小店",
+          "address": "1-1-1 Azabudai, Minato-ku, Tokyo 106-0041",
+          "lat": 35.6592,
+          "lng": 139.7358,
+          "notes": "麻布台Hills新開發區，集合多家精品美食小店和餐廳，適合探索新美食。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=麻布台Hills+美食"
         }
       ]
     },
