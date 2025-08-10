@@ -173,14 +173,6 @@
           "lng": 139.7358,
           "notes": "麻布台Hills新開發區，集合多家精品美食小店和餐廳，適合探索新美食。",
           "gmaps": "https://www.google.com/maps/search/?api=1&query=麻布台Hills+美食"
-        },
-        {
-          "name": "燒肉腰塚 白金台",
-          "address": "Shirokane-dai, Minato-ku, Tokyo",
-          "lat": 35.6389,
-          "lng": 139.7234,
-          "notes": "白金台地區知名燒肉店，以高品質和牛和特色醬料聞名，建議提前預約。",
-          "gmaps": "https://www.google.com/maps/search/?api=1&query=燒肉腰塚+白金台"
         }
       ]
     },
@@ -220,6 +212,14 @@
           "lng": 139.7170,
           "notes": "雅叙園 / 八芳園 均有中庭咖啡與日本庭園，適合午後短憩。",
           "gmaps": "https://www.google.com/maps/search/?api=1&query=Hotel+Gajoen+Tokyo+garden"
+        },
+        {
+          "name": "燒肉腰塚 白金台",
+          "address": "Shirokane-dai, Minato-ku, Tokyo",
+          "lat": 35.6389,
+          "lng": 139.7234,
+          "notes": "白金台地區知名燒肉店，以高品質和牛和特色醬料聞名，建議提前預約。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=燒肉腰塚+白金台"
         }
       ]
     },
