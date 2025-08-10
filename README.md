@@ -36,6 +36,8 @@ http://localhost/JpTravel/test.html
 - `map.js` - 地圖和行程載入程式
 - `itinerary.json` - 行程資料
 - `test.html` - 測試頁面
+- `chrome-test.html` - Chrome 瀏覽器診斷測試頁面
+- `sw.js` - 服務工作者（快取管理）
 - `README.md` - 說明檔案
 
 ## 功能特色
@@ -76,6 +78,27 @@ http://localhost/JpTravel/test.html
    - 確認 `itinerary.json` 檔案存在
    - 檢查檔案格式是否正確
 
+### Chrome 瀏覽器 404 錯誤
+如果 Chrome 瀏覽器顯示 404 錯誤但 Edge 瀏覽器正常：
+
+**立即解決方案：**
+1. 使用 Edge 瀏覽器（推薦）
+2. 使用 `chrome-test.html` 進行診斷測試
+
+**Chrome 專用解決方案：**
+1. 清除 Chrome 快取：按 `Ctrl+Shift+Delete`，選擇「所有時間」
+2. 使用無痕模式
+3. 暫時停用所有 Chrome 擴充功能
+4. 等待 5-10 分鐘後重新整理頁面
+5. 點擊頁面中的「Chrome 強制重新載入」按鈕
+
+**技術說明：**
+Chrome 瀏覽器有時會因為安全政策或快取問題阻擋請求。本應用已實作多層快取清除和備用載入機制，包括：
+- 服務工作者 (Service Worker) 快取管理
+- 4 種不同的資料載入方法
+- 強制快取清除
+- Chrome 專用除錯面板
+
 ### 聯絡支援
 
 如果仍有問題，請檢查：
@@ -83,3 +106,4 @@ http://localhost/JpTravel/test.html
 2. Apache 服務是否啟動
 3. 檔案路徑是否正確
 4. 瀏覽器控制台錯誤訊息
+5. 使用 `chrome-test.html` 進行 Chrome 專用診斷

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chrome 測試頁面</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        .info { background: #d1ecf1; border-color: #bee5eb; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Chrome 瀏覽器測試頁面</h1>
+    <p>此頁面用於測試 Chrome 瀏覽器的基本功能和網路連線</p>
+    
+    <div class="test-section info">
+        <h3>瀏覽器資訊</h3>
+        <p><strong>User Agent:</strong> <span id="user-agent"></span></p>
+        <p><strong>平台:</strong> <span id="platform"></span></p>
+        <p><strong>語言:</strong> <span id="language"></span></p>
+        <p><strong>Cookie 啟用:</strong> <span id="cookies"></span></p>
+        <p><strong>JavaScript 啟用:</strong> <span id="javascript"></span></p>
+    </div>
+    
+    <div class="test-section">
+        <h3>網路連線測試</h3>
+        <button onclick="testBasicFetch()">測試基本 Fetch</button>
+        <button onclick="testItineraryFetch()">測試 itinerary.json 載入</button>
+        <button onclick="testGitHubPages()">測試 GitHub Pages 連線</button>
+        <button onclick="testXHR()">測試 XMLHttpRequest</button>
+        <div id="network-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>快取測試</h3>
+        <button onclick="clearAllCaches()">清除所有快取</button>
+        <button onclick="testCacheStatus()">檢查快取狀態</button>
+        <div id="cache-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>儲存測試</h3>
+        <button onclick="testLocalStorage()">測試 LocalStorage</button>
+        <button onclick="testSessionStorage()">測試 SessionStorage</button>
+        <button onclick="clearAllStorage()">清除所有儲存</button>
+        <div id="storage-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>手動測試連結</h3>
+        <p><a href="https://hsiuete.github.io/jptravel/" target="_blank">主頁面</a></p>
+        <p><a href="https://hsiuete.github.io/jptravel/itinerary.json" target="_blank">itinerary.json</a></p>
+        <p><a href="https://hsiuete.github.io/jptravel/map.js" target="_blank">map.js</a></p>
+        <p><a href="https://hsiuete.github.io/jptravel/index.html" target="_blank">index.html</a></p>
+    </div>
+
+    <script>
+        // 顯示瀏覽器資訊
+        document.getElementById('user-agent').textContent = navigator.userAgent;
+        document.getElementById('platform').textContent = navigator.platform;
+        document.getElementById('language').textContent = navigator.language;
+        document.getElementById('cookies').textContent = navigator.cookieEnabled ? '是' : '否';
+        document.getElementById('javascript').textContent = '是';
+        
+        function showResult(elementId, message, isSuccess = true) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="${isSuccess ? 'success' : 'error'}">${message}</div>`;
+        }
+        
+        async function testBasicFetch() {
+            try {
+                const response = await fetch('https://httpbin.org/get');
+                const data = await response.json();
+                showResult('network-results', `基本 Fetch 成功: ${response.status} ${response.statusText}`);
+            } catch (error) {
+                showResult('network-results', `基本 Fetch 失敗: ${error.message}`, false);
+            }
+        }
+        
+        async function testItineraryFetch() {
+            try {
+                const timestamp = new Date().getTime();
+                const url = `itinerary.json?_t=${timestamp}&v=${Math.random()}`;
+                const response = await fetch(url, {
+                    cache: 'no-store',
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult('network-results', `itinerary.json 載入成功: ${response.status} ${response.statusText}<br>載入了 ${data.days.length} 天的行程`);
+                } else {
+                    showResult('network-results', `itinerary.json HTTP 錯誤: ${response.status} ${response.statusText}`, false);
+                }
+            } catch (error) {
+                showResult('network-results', `itinerary.json 載入失敗: ${error.message}`, false);
+            }
+        }
+        
+        async function testGitHubPages() {
+            try {
+                const timestamp = new Date().getTime();
+                const url = `https://hsiuete.github.io/jptravel/itinerary.json?_t=${timestamp}`;
+                const response = await fetch(url, {
+                    cache: 'no-store',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult('network-results', `GitHub Pages 連線成功: ${response.status} ${response.statusText}<br>載入了 ${data.days.length} 天的行程`);
+                } else {
+                    showResult('network-results', `GitHub Pages HTTP 錯誤: ${response.status} ${response.statusText}`, false);
+                }
+            } catch (error) {
+                showResult('network-results', `GitHub Pages 連線失敗: ${error.message}`, false);
+            }
+        }
+        
+        function testXHR() {
+            try {
+                const xhr = new XMLHttpRequest();
+                const timestamp = new Date().getTime();
+                const url = `itinerary.json?_t=${timestamp}`;
+                
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        try {
+                            const data = JSON.parse(xhr.responseText);
+                            showResult('network-results', `XMLHttpRequest 成功: ${xhr.status} ${xhr.statusText}<br>載入了 ${data.days.length} 天的行程`);
+                        } catch (e) {
+                            showResult('network-results', `XMLHttpRequest JSON 解析失敗: ${e.message}`, false);
+                        }
+                    } else {
+                        showResult('network-results', `XMLHttpRequest HTTP 錯誤: ${xhr.status} ${xhr.statusText}`, false);
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    showResult('network-results', `XMLHttpRequest 網路錯誤`, false);
+                };
+                
+                xhr.open('GET', url, true);
+                xhr.setRequestHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+                xhr.send();
+            } catch (error) {
+                showResult('network-results', `XMLHttpRequest 失敗: ${error.message}`, false);
+            }
+        }
+        
+        async function clearAllCaches() {
+            try {
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(cacheNames.map(name => caches.delete(name)));
+                    showResult('cache-results', `已清除 ${cacheNames.length} 個快取`);
+                } else {
+                    showResult('cache-results', '此瀏覽器不支援 Cache API', false);
+                }
+            } catch (error) {
+                showResult('cache-results', `清除快取失敗: ${error.message}`, false);
+            }
+        }
+        
+        async function testCacheStatus() {
+            try {
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    showResult('cache-results', `當前快取數量: ${cacheNames.length}<br>快取名稱: ${cacheNames.join(', ') || '無'}`);
+                } else {
+                    showResult('cache-results', '此瀏覽器不支援 Cache API');
+                }
+            } catch (error) {
+                showResult('cache-results', `檢查快取狀態失敗: ${error.message}`, false);
+            }
+        }
+        
+        function testLocalStorage() {
+            try {
+                localStorage.setItem('test', 'test-value');
+                const value = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                showResult('storage-results', `LocalStorage 測試成功: ${value}`);
+            } catch (error) {
+                showResult('storage-results', `LocalStorage 測試失敗: ${error.message}`, false);
+            }
+        }
+        
+        function testSessionStorage() {
+            try {
+                sessionStorage.setItem('test', 'test-value');
+                const value = sessionStorage.getItem('test');
+                sessionStorage.removeItem('test');
+                showResult('storage-results', `SessionStorage 測試成功: ${value}`);
+            } catch (error) {
+                showResult('storage-results', `SessionStorage 測試失敗: ${error.message}`, false);
+            }
+        }
+        
+        function clearAllStorage() {
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                showResult('storage-results', '已清除所有儲存');
+            } catch (error) {
+                showResult('storage-results', `清除儲存失敗: ${error.message}`, false);
+            }
+        }
+        
+        // 頁面載入完成後自動執行一些測試
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                testCacheStatus();
+                testLocalStorage();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -11,13 +11,15 @@
   <meta name="mobile-web-app-capable" content="yes" />
   
   <!-- Cache Busting for all browsers -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0, private" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <meta http-equiv="ETag" content="" />
+  <meta http-equiv="Last-Modified" content="0" />
   
   <!-- Chrome-specific fixes -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="google" content="notranslate" />
   
   <!-- Force Safari to reload -->
   <script>
@@ -38,19 +40,29 @@
       }
     }
     
-    // Chrome-specific cache busting
+    // Chrome-specific cache busting - More aggressive approach
     if (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('Edge')) {
-      console.log('Chrome detected - applying cache busting');
+      console.log('Chrome detected - applying aggressive cache busting');
       
-      // Force Chrome to reload with timestamp
+      // Force Chrome to reload with timestamp and random parameter
       const timestamp = new Date().getTime();
+      const random = Math.random().toString(36).substring(7);
       const currentUrl = window.location.href;
       
       if (!currentUrl.includes('_t=')) {
         const separator = currentUrl.includes('?') ? '&' : '?';
-        const newUrl = currentUrl + separator + '_t=' + timestamp;
+        const newUrl = currentUrl + separator + '_t=' + timestamp + '&r=' + random;
         console.log('Chrome: redirecting to', newUrl);
         window.location.href = newUrl;
+      }
+      
+      // Additional Chrome-specific cache clearing
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (let name of names) {
+            caches.delete(name);
+          }
+        });
       }
     }
   </script>
@@ -173,9 +185,65 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+    
+    /* Chrome-specific styles */
+    .chrome-debug {
+      font-family: 'Courier New', monospace;
+    }
+    .chrome-debug button:hover {
+      background: #1565c0 !important;
+    }
   </style>
 </head>
 <body>
+  <!-- Chrome-specific service worker for cache busting -->
+  <script>
+    if (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('Edge')) {
+      console.log('Chrome detected - applying aggressive cache clearing');
+      
+      // Show Chrome notification
+      setTimeout(function() {
+        const notification = document.createElement('div');
+        notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #1976d2; color: white; padding: 15px; border-radius: 8px; z-index: 10000; max-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+        notification.innerHTML = '<h4>Chrome 瀏覽器檢測</h4><p>正在應用 Chrome 專用快取清除...</p><p><small>如果遇到 404 錯誤，請使用 Edge 瀏覽器</small></p>';
+        document.body.appendChild(notification);
+        
+        // Remove notification after 5 seconds
+        setTimeout(function() {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 5000);
+      }, 1000);
+      
+      // Register service worker to clear cache
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+          console.log('Chrome Service Worker registered');
+        }).catch(function(err) {
+          console.log('Chrome Service Worker registration failed');
+        });
+      }
+      
+      // Force clear all storage
+      if (window.localStorage) {
+        localStorage.clear();
+      }
+      if (window.sessionStorage) {
+        sessionStorage.clear();
+      }
+      
+      // Clear IndexedDB
+      if ('indexedDB' in window) {
+        indexedDB.databases().then(function(databases) {
+          databases.forEach(function(db) {
+            indexedDB.deleteDatabase(db.name);
+          });
+        });
+      }
+    }
+  </script>
+  
   <header>
     <h1>東京記行 — 2026-01-02 → 2026-01-08（Shopping & 美食）</h1>
     <div class="small">出發地：高雄 → 東京。重點：血拚 & 美食（已把你提供的餐廳/商圈納入）</div>
@@ -204,6 +272,16 @@
           <div class="spinner"></div>
           <p>載入中... Chrome 瀏覽器載入中</p>
           <p><small>如果載入失敗，請嘗試重新整理頁面</small></p>
+          
+          <!-- Chrome Debug Panel -->
+          <div class="chrome-debug" style="margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 8px; font-size: 12px;">
+            <h4>Chrome 除錯資訊</h4>
+            <p><strong>當前時間:</strong> <span id="chrome-time"></span></p>
+            <p><strong>隨機參數:</strong> <span id="chrome-random"></span></p>
+            <p><strong>直接連結測試:</strong> <a href="https://hsiuete.github.io/jptravel/itinerary.json" target="_blank" style="color: #1976d2;">點擊測試 itinerary.json</a></p>
+            <p><strong>Chrome 強制重新載入:</strong> <button id="chrome-force-reload" style="background: #1976d2; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">強制重新載入</button></p>
+            <p><strong>建議:</strong> 如果持續失敗，請使用 Edge 瀏覽器</p>
+          </div>
         </div>
         </div>
       </div>

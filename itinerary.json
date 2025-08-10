@@ -110,6 +110,30 @@
           "lng": 139.7637,
           "notes": "銀座地區拉麵名店，特色湯頭與配料。",
           "gmaps": "https://www.google.com/maps/search/?api=1&query=銀座八五拉麵"
+        },
+        {
+          "name": "丸之內紅磚廣場Echire-法式甜點",
+          "address": "Marunouchi Brick Square, 2-6-1 Marunouchi, Chiyoda-ku, Tokyo",
+          "lat": 35.6805,
+          "lng": 139.7668,
+          "notes": "丸之內紅磚廣場內的Echire法式甜點店，以馬德蓮和可頌聞名。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=丸之內紅磚廣場+Echire+法式甜點"
+        },
+        {
+          "name": "拉麵すぎ本",
+          "address": "Marunouchi area, Chiyoda-ku, Tokyo",
+          "lat": 35.6808,
+          "lng": 139.7672,
+          "notes": "丸之內地區知名拉麵店，以濃郁湯頭和特製麵條聞名。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=拉麵すぎ本+丸之內"
+        },
+        {
+          "name": "烤牛舌ねぎし丸之內-牛舌料理",
+          "address": "Marunouchi area, Chiyoda-ku, Tokyo",
+          "lat": 35.6810,
+          "lng": 139.7675,
+          "notes": "丸之內地區的ねぎし烤牛舌專門店，以厚切牛舌和特製醬料聞名。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=ねぎし+丸之內+烤牛舌"
         }
       ]
     },
@@ -149,6 +173,14 @@
           "lng": 139.7358,
           "notes": "麻布台Hills新開發區，集合多家精品美食小店和餐廳，適合探索新美食。",
           "gmaps": "https://www.google.com/maps/search/?api=1&query=麻布台Hills+美食"
+        },
+        {
+          "name": "燒肉腰塚 白金台",
+          "address": "Shirokane-dai, Minato-ku, Tokyo",
+          "lat": 35.6389,
+          "lng": 139.7234,
+          "notes": "白金台地區知名燒肉店，以高品質和牛和特色醬料聞名，建議提前預約。",
+          "gmaps": "https://www.google.com/maps/search/?api=1&query=燒肉腰塚+白金台"
         }
       ]
     },

@@ -21,6 +21,38 @@
     if (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('Edge')) {
       if (chromeLoading) {
         chromeLoading.style.display = 'block';
+        
+        // Populate Chrome debug panel
+        const chromeTime = document.getElementById('chrome-time');
+        const chromeRandom = document.getElementById('chrome-random');
+        if (chromeTime) chromeTime.textContent = new Date().toLocaleString();
+        if (chromeRandom) chromeRandom.textContent = Math.random().toString(36).substring(7);
+        
+        // Add Chrome force reload functionality
+        const chromeForceReload = document.getElementById('chrome-force-reload');
+        if (chromeForceReload) {
+          chromeForceReload.addEventListener('click', function() {
+            console.log('Chrome force reload clicked');
+            
+            // Clear all caches
+            if ('caches' in window) {
+              caches.keys().then(function(names) {
+                names.forEach(function(name) {
+                  caches.delete(name);
+                });
+              });
+            }
+            
+            // Force reload with new parameters
+            const timestamp = new Date().getTime();
+            const random = Math.random().toString(36).substring(7);
+            const currentUrl = window.location.href.split('?')[0]; // Remove existing parameters
+            const newUrl = currentUrl + '?_t=' + timestamp + '&r=' + random + '&force=' + Date.now();
+            
+            console.log('Chrome: Force reloading to', newUrl);
+            window.location.href = newUrl;
+          });
+        }
       }
     } else if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
       if (safariLoading) {
@@ -35,7 +67,8 @@
     // Method 1: Standard fetch with aggressive cache busting
     try {
       const timestamp = new Date().getTime();
-      const url1 = `itinerary.json?_t=${timestamp}&v=${Math.random()}`;
+      const random = Math.random().toString(36).substring(7);
+      const url1 = `itinerary.json?_t=${timestamp}&v=${random}&chrome=${Date.now()}`;
       console.log('Trying Method 1:', url1);
       
       const controller1 = new AbortController();
@@ -43,11 +76,14 @@
       
       resp = await fetch(url1, {
         signal: controller1.signal,
-        cache: 'no-cache',
+        cache: 'no-store',
+        mode: 'cors',
+        credentials: 'omit',
         headers: {
           'Accept': 'application/json',
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'X-Requested-With': 'XMLHttpRequest'
         }
       });
       
@@ -68,7 +104,9 @@
       
       // Method 2: Try with absolute path
       try {
-        const url2 = `./itinerary.json?_t=${Date.now()}`;
+        const timestamp2 = Date.now();
+        const random2 = Math.random().toString(36).substring(7);
+        const url2 = `./itinerary.json?_t=${timestamp2}&v=${random2}&chrome=${Date.now()}`;
         console.log('Trying Method 2:', url2);
         
         const controller2 = new AbortController();
@@ -76,10 +114,14 @@
         
         resp = await fetch(url2, {
           signal: controller2.signal,
-          cache: 'no-cache',
+          cache: 'no-store',
+          mode: 'cors',
+          credentials: 'omit',
           headers: {
             'Accept': 'application/json',
-            'Cache-Control': 'no-cache'
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'X-Requested-With': 'XMLHttpRequest'
           }
         });
         
@@ -100,7 +142,9 @@
         
         // Method 3: Try with full GitHub Pages URL
         try {
-          const url3 = `https://hsiuete.github.io/jptravel/itinerary.json?_t=${Date.now()}`;
+          const timestamp3 = Date.now();
+          const random3 = Math.random().toString(36).substring(7);
+          const url3 = `https://hsiuete.github.io/jptravel/itinerary.json?_t=${timestamp3}&v=${random3}&chrome=${Date.now()}`;
           console.log('Trying Method 3:', url3);
           
           const controller3 = new AbortController();
@@ -108,11 +152,14 @@
           
           resp = await fetch(url3, {
             signal: controller3.signal,
-            cache: 'no-cache',
+            cache: 'no-store',
             mode: 'cors',
+            credentials: 'omit',
             headers: {
               'Accept': 'application/json',
-              'Cache-Control': 'no-cache'
+              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              'Pragma': 'no-cache',
+              'X-Requested-With': 'XMLHttpRequest'
             }
           });
           
@@ -130,7 +177,59 @@
           }
         } catch (err3) {
           console.log('Method 3 failed:', err3.message);
-          throw new Error(`All fetch methods failed. Safari may be blocking requests. Last error: ${err3.message}`);
+          
+          // Method 4: Chrome-specific XMLHttpRequest fallback
+          if (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('Edge')) {
+            try {
+              console.log('Trying Method 4: Chrome XMLHttpRequest fallback');
+              
+              const url4 = `https://hsiuete.github.io/jptravel/itinerary.json?_t=${Date.now()}&chrome_xhr=${Math.random()}`;
+              
+              data = await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.timeout = 15000;
+                
+                xhr.onload = function() {
+                  if (xhr.status === 200) {
+                    try {
+                      const jsonData = JSON.parse(xhr.responseText);
+                      resolve(jsonData);
+                    } catch (e) {
+                      reject(new Error('Invalid JSON response'));
+                    }
+                  } else {
+                    reject(new Error(`XHR HTTP error! status: ${xhr.status}`));
+                  }
+                };
+                
+                xhr.onerror = function() {
+                  reject(new Error('XHR network error'));
+                };
+                
+                xhr.ontimeout = function() {
+                  reject(new Error('XHR timeout'));
+                };
+                
+                xhr.open('GET', url4, true);
+                xhr.setRequestHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+                xhr.setRequestHeader('Pragma', 'no-cache');
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.send();
+              });
+              
+              console.log('Method 4 successful');
+              
+              // Hide all loading indicators on success
+              if (safariLoading) safariLoading.style.display = 'none';
+              if (chromeLoading) chromeLoading.style.display = 'none';
+              
+            } catch (err4) {
+              console.log('Method 4 failed:', err4.message);
+              throw new Error(`All fetch methods failed. Chrome is blocking all requests. Last error: ${err4.message}`);
+            }
+          } else {
+            throw new Error(`All fetch methods failed. Safari may be blocking requests. Last error: ${err3.message}`);
+          }
         }
       }
     }
@@ -195,10 +294,12 @@
       }
     } else if (err.message.includes('All fetch methods failed')) {
       if (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('Edge')) {
-        showError('Chrome is blocking all requests. This is a known Chrome issue. Solutions: 1) Use Edge browser 2) Clear Chrome cache completely 3) Try incognito mode 4) Wait 5-10 minutes and refresh 5) Disable Chrome extensions temporarily');
+        showError('Chrome is blocking all requests. This is a known Chrome issue. Solutions: 1) Use Edge browser 2) Clear Chrome cache completely 3) Try incognito mode 4) Wait 5-10 minutes and refresh 5) Disable Chrome extensions temporarily 6) Try the direct URL: https://hsiuete.github.io/jptravel/itinerary.json');
       } else {
         showError('Safari is blocking all requests. This is a known Safari issue. Solutions: 1) Use Chrome browser 2) Add to Home Screen 3) Wait 5-10 minutes and refresh 4) Clear Safari cache completely');
       }
+    } else if (err.message.includes('Chrome is blocking all requests')) {
+      showError('Chrome has blocked all request methods. This is a severe Chrome security issue. Solutions: 1) Use Edge browser (recommended) 2) Clear ALL Chrome data (Settings > Privacy > Clear browsing data > All time) 3) Try incognito mode 4) Disable ALL Chrome extensions 5) Try the direct URL: https://hsiuete.github.io/jptravel/itinerary.json 6) Wait 10-15 minutes and refresh');
     } else {
       showError(err.message);
     }
