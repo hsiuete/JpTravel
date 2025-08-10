@@ -1,8 +1,25 @@
 // map.js - external map loader with tabbed interface (expects itinerary.json present)
+// Safari iOS compatibility fixes included
 (async function(){
   try {
     console.log('Loading itinerary.json...');
-    const resp = await fetch('itinerary.json');
+    console.log('User Agent:', navigator.userAgent);
+    console.log('Platform:', navigator.platform);
+    
+    // Safari-specific fetch with timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    
+    const resp = await fetch('itinerary.json', {
+      signal: controller.signal,
+      cache: 'no-cache', // Force fresh request
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache'
+      }
+    });
+    
+    clearTimeout(timeoutId);
     
     if (!resp.ok) {
       throw new Error(`HTTP error! status: ${resp.status}`);
@@ -43,7 +60,15 @@
     
   } catch(err){
     console.error('Error loading itinerary:', err);
-    showError(err.message);
+    
+    // Safari-specific error handling
+    if (err.name === 'AbortError') {
+      showError('Request timeout - Safari may be blocking the request. Try refreshing the page.');
+    } else if (err.message.includes('Failed to fetch')) {
+      showError('Safari blocked the request. This is a common Safari security feature. Try: 1) Refresh the page 2) Clear Safari cache 3) Use Chrome instead');
+    } else {
+      showError(err.message);
+    }
   }
 })();
 
@@ -67,6 +92,10 @@ function createTabs(days) {
     const tabButton = document.createElement('button');
     tabButton.textContent = `${day.date} — ${day.title}`;
     tabButton.onclick = () => switchTab(index);
+    
+    // Safari-specific button fixes
+    tabButton.setAttribute('type', 'button');
+    tabButton.style.webkitAppearance = 'none';
     
     // Create tab content
     const tabContent = document.createElement('div');
@@ -132,7 +161,14 @@ function showError(errorMessage) {
         <li>檔案格式正確（有效的 JSON）</li>
         <li>透過 HTTP 伺服器存取（如 XAMPP）</li>
       </ul>
-      <p><strong>解決方案：</strong></p>
+      <p><strong>Safari 使用者解決方案：</strong></p>
+      <ol>
+        <li>重新整理頁面 (⌘+R)</li>
+        <li>清除 Safari 快取 (設定 → Safari → 清除歷史記錄與網站資料)</li>
+        <li>使用 Chrome 瀏覽器</li>
+        <li>檢查網路連線</li>
+      </ol>
+      <p><strong>一般解決方案：</strong></p>
       <ol>
         <li>啟動 XAMPP Control Panel</li>
         <li>啟動 Apache 服務</li>
